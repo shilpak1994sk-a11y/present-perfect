@@ -245,26 +245,32 @@
     .filter-tab:hover { border-color: var(--gold); color: var(--gold); }
     .filter-tab.active { background: var(--text-primary); color: var(--white); border-color: var(--text-primary); }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; }
-    .product-card { background: var(--beige); border-radius: var(--radius-lg); overflow: hidden; position: relative; transition: transform var(--transition), box-shadow var(--transition); border: 1px solid var(--border-light); }
+    .product-card { background: var(--beige); border-radius: var(--radius-lg); overflow: hidden; position: relative; transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition); border: 1px solid var(--border-light); }
     .product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
     .product-img-wrap { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--beige-mid); }
     .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); display: block; }
     .product-card:hover .product-img-wrap img { transform: scale(1.08); }
-    .product-badge { position: absolute; top: 16px; left: 16px; padding: 4px 12px; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; background: var(--gold); color: var(--black); border-radius: var(--radius-xl); font-weight: 500; }
-    .product-wishlist { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.9); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all var(--transition); cursor: pointer; backdrop-filter: blur(8px); }
-    .product-wishlist:hover { background: var(--white); transform: scale(1.1); }
-    .product-wishlist.active { background: #fff0f0; border-color: #e88; color: #d44; }
+    .product-badge { position: absolute; top: 16px; left: 16px; padding: 4px 12px; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; background: var(--gold); color: var(--black); border-radius: var(--radius-xl); font-weight: 500; z-index: 2; }
+    .product-badge.out-stock { background: rgba(244,67,54,0.15); color: #b71c1c; }
+    .product-actions { position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 2; }
+    .product-action { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.92); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all var(--transition); cursor: pointer; backdrop-filter: blur(8px); }
+    .product-action:hover { background: var(--white); transform: scale(1.08); }
+    .product-action.active { background: #fff0f0; border-color: #e88; color: #d44; }
     .product-quick-view { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.85); color: var(--white); padding: 12px; text-align: center; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; transform: translateY(100%); transition: transform var(--transition); backdrop-filter: blur(8px); cursor: pointer; }
     .product-card:hover .product-quick-view { transform: translateY(0); }
+    .product-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.35) 100%); pointer-events: none; }
     .product-info { padding: 20px; }
+    .product-meta-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 0.7rem; color: var(--text-muted); }
+    .product-rating { display: inline-flex; align-items: center; gap: 4px; color: var(--gold-dark); font-weight: 500; }
     .product-cat { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
     .product-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
     .product-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; font-weight: 300; }
-    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .product-price { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; color: var(--text-primary); }
     .product-price small { font-size: 0.7rem; font-family: var(--font-body); color: var(--text-muted); text-decoration: line-through; margin-right: 4px; }
     .add-to-cart-btn { padding: 10px 20px; background: var(--text-primary); color: var(--white); border-radius: var(--radius-xl); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; transition: all var(--transition); border: 1px solid var(--text-primary); }
     .add-to-cart-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+    .add-to-cart-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .no-results { text-align: center; padding: 80px 20px; color: var(--text-muted); font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; grid-column: 1/-1; }
 
     .pricing-note { background: var(--beige); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; margin-top: 48px; }
@@ -399,13 +405,27 @@
     .faq-item.open .faq-answer { max-height: 300px; }
 
     #instagram { background: var(--beige); overflow: hidden; }
-    .insta-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
-    .insta-item { aspect-ratio: 1; overflow: hidden; position: relative; cursor: pointer; }
+    .insta-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .insta-item { aspect-ratio: 1; overflow: hidden; position: relative; cursor: pointer; border-radius: var(--radius-lg); }
+    .insta-item:nth-child(2n) { aspect-ratio: 4/5; }
     .insta-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease, filter 0.3s ease; filter: brightness(0.9); }
     .insta-item:hover img { transform: scale(1.08); filter: brightness(1); }
-    .insta-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); opacity: 0; transition: opacity var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; }
+    .insta-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.28); opacity: 0; transition: opacity var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; }
     .insta-item:hover .insta-overlay { opacity: 1; }
     .insta-handle { text-align: center; margin-top: 32px; }
+    .lightbox-overlay { display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .lightbox-overlay .modal-close { position: absolute; top: 24px; right: 24px; z-index: 2; }
+    .lightbox-content { position: relative; width: min(920px, 100%); background: rgba(10,10,10,0.95); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
+    .lightbox-content img { width: 100%; max-height: 78vh; object-fit: cover; display: block; }
+    .lightbox-caption { padding: 20px 24px 24px; color: var(--white); }
+    .lightbox-caption h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 6px; }
+    .lightbox-caption p { font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .upload-grid { display: grid; gap: 12px; margin-top: 8px; }
+    .upload-card { border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 12px; background: var(--beige); }
+    .upload-card label { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 8px; }
+    .upload-card input { width: 100%; font-size: 0.75rem; color: var(--text-secondary); }
+    .upload-preview { min-height: 40px; font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .upload-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(201,168,76,0.12); color: var(--gold-dark); font-size: 0.7rem; }
     .insta-handle a { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--border); padding-bottom: 4px; transition: all var(--transition); }
     .insta-handle a:hover { color: var(--gold); border-color: var(--gold); }
 
@@ -760,12 +780,12 @@
     </div>
   </div>
   <div class="insta-grid fade-up" data-delay="200">
-    <div class="insta-item"><img src="./custom-magnet.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./custom-magnet.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
-    <div class="insta-item"><img src="./flash-cards.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./flash-cards.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
-    <div class="insta-item"><img src="./chowka-bara.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./chowka-bara.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
-    <div class="insta-item"><img src="./custom-magnet.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./custom-magnet.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
-    <div class="insta-item"><img src="./wooden-carvings.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./wooden-carvings.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
-    <div class="insta-item"><img src="./custom-magnet.png" alt="Present Perfect Instagram post" loading="lazy" decoding="async" width="300" height="300"  onerror="this.onerror=null;this.src='./custom-magnet.png'" /><div class="insta-overlay" aria-hidden="true">♥</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View custom magnet gallery image" data-title="Customized Photo Magnets" data-caption="Premium handmade magnets crafted in Mysore with rich detailing and elegant finishes."><img src="./custom-magnet.png" alt="Customized photo magnets displayed in a premium handmade gift collection" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./custom-magnet.png'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View flash cards gallery image" data-title="Learning Gifts for Kids" data-caption="Handmade flash cards designed to make learning joyful, colorful, and memorable."><img src="./flash-cards.png" alt="Handmade flash cards for children with cultural and educational themes" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./flash-cards.png'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View board game gallery image" data-title="Traditional Board Games" data-caption="Elegant handcrafted Chowka Bhara pieces made for timeless family moments."><img src="./chowka-bara.png" alt="Traditional handcrafted Chowka Bhara board game" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./chowka-bara.png'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View wooden carving gallery image" data-title="Handcrafted Wooden Carvings" data-caption="Luxurious wooden pieces finished in rich tones and polished detail."><img src="./wooden-carvings.png" alt="Handcrafted wooden carving with premium finish and luxury styling" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./wooden-carvings.png'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View car hangable gallery image" data-title="Customized Car Hangables" data-caption="Personalized gifts that combine function and elegance for every commute."><img src="./car-hangables.jpeg" alt="Personalized car hangable accessory in a premium handmade styling" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./car-hangables.jpeg'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
+    <div class="insta-item" role="button" tabindex="0" aria-label="View pouch gallery image" data-title="Premium Customized Pouches" data-caption="Elegant handmade pouches designed for gifting and personal use."><img src="./pouch2.jpeg" alt="Premium customized pouch with handmade detailing" loading="lazy" decoding="async" width="300" height="300" onerror="this.onerror=null;this.src='./pouch2.jpeg'" /><div class="insta-overlay" aria-hidden="true">✦</div></div>
   </div>
   <div class="insta-handle" style="padding:32px 24px 60px;">
     <a href="https://instagram.com/present_perfect" target="_blank" rel="noopener noreferrer">📸 @present_perfect</a>
@@ -923,8 +943,8 @@
             <span class="form-error-msg" id="err-phone"></span>
           </div>
           <div class="form-group full">
-            <label for="c-email">Email Address *</label>
-            <input type="email" id="c-email" placeholder="you@email.com" required />
+            <label for="c-email">Email Address (Optional)</label>
+            <input type="email" id="c-email" placeholder="you@email.com" />
             <span class="form-error-msg" id="err-email"></span>
           </div>
           <div class="form-group full">
@@ -945,8 +965,33 @@
             <span class="form-error-msg" id="err-pin"></span>
           </div>
           <div class="form-group">
-            <label for="c-msg">Gift Message (Optional)</label>
-            <input type="text" id="c-msg" placeholder="A note for the recipient..." />
+            <label for="c-landmark">Landmark</label>
+            <input type="text" id="c-landmark" placeholder="Nearest landmark" />
+          </div>
+          <div class="form-group full">
+            <label for="c-msg">Customization Notes</label>
+            <input type="text" id="c-msg" placeholder="A note for the recipient or customization details..." />
+          </div>
+          <div class="form-group full">
+            <label>Upload Design Files</label>
+            <div class="upload-grid">
+              <div class="upload-card">
+                <label for="c-image-upload">Upload Image (Max 5MB)</label>
+                <input type="file" id="c-image-upload" accept="image/*" onchange="handleUpload(this, 'image-preview')" />
+                <div class="upload-preview" id="image-preview">No image selected</div>
+              </div>
+              <div class="upload-card">
+                <label for="c-pdf-upload">Upload PDF / Design (Max 10MB)</label>
+                <input type="file" id="c-pdf-upload" accept=".pdf,image/*" onchange="handleUpload(this, 'pdf-preview')" />
+                <div class="upload-preview" id="pdf-preview">No file selected</div>
+              </div>
+              <div class="upload-card">
+                <label for="c-design-upload">Upload Design Note</label>
+                <input type="file" id="c-design-upload" accept="image/*,.pdf,.doc,.docx,.txt" onchange="handleUpload(this, 'design-preview')" />
+                <div class="upload-preview" id="design-preview">No file selected</div>
+              </div>
+            </div>
+            <p style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;">Allowed formats: images, PDF, DOC, DOCX, TXT. Max size varies by file type.</p>
           </div>
         </div>
         <p class="form-section-title">Payment Method</p>
@@ -963,11 +1008,13 @@
         <div id="upi-section" style="display:none;">
           <div class="upi-section">
             <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-bottom:8px;">Scan or tap to pay the exact order total</p>
-            <div class="upi-id-display" id="upi-id-display">9071185948@ybl</div>
-            <div class="upi-qr" id="upi-qr-box"><img id="upi-qr-img" alt="UPI QR code for payment" width="160" height="160" loading="lazy" decoding="async" /></div>
+            <div class="upi-id-display" id="upi-id-display">shilpa.k1994.sk-1@okaxis</div>
+            <div id="upi-amount" style="font-size:0.82rem;color:var(--gold-dark);text-align:center;margin-bottom:8px;">Amount: ₹0</div>
+            <div class="upi-qr" id="upi-qr-box"><img id="upi-qr-img" alt="UPI QR code for payment" width="180" height="180" loading="lazy" decoding="async" /></div>
             <div style="text-align:center;margin:8px 0;">
               <button type="button" class="btn btn-outline upi-copy-btn" onclick="copyUPI()">📋 Copy UPI ID</button>
             </div>
+            <p style="font-size:0.74rem;color:var(--text-muted);line-height:1.6;text-align:center;">Pay the exact amount shown above and add the transaction ID below to complete your order.</p>
             <div class="form-group" style="margin-top:16px;">
               <label for="c-txn">Transaction / Reference Number *</label>
               <input type="text" id="c-txn" placeholder="Enter UPI transaction ID" />
@@ -995,6 +1042,19 @@
     </div>
     <div class="modal-body">
       <div class="qv-grid" id="qv-content"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Gallery preview">
+  <div class="modal lightbox-overlay" style="max-width:960px;background:transparent;box-shadow:none;">
+    <button class="modal-close" onclick="closeGalleryLightbox()" aria-label="Close gallery preview">✕</button>
+    <div class="lightbox-content">
+      <img id="gallery-lightbox-image" alt="Gallery preview" />
+      <div class="lightbox-caption">
+        <h3 id="gallery-lightbox-title"></h3>
+        <p id="gallery-lightbox-caption"></p>
+      </div>
     </div>
   </div>
 </div>
@@ -1052,7 +1112,7 @@ const PRODUCTS = [
     name: "Car Hangable",
     desc: "Customized car hangable. Made with love.",
     badge: null, sizes: null, price: 60, mrp: null,
-    img: "./custom-magnet.png"
+    img: "./car-hangables.jpeg"
   },
   {
     id: 4, category: "Customized", featured: true, minQty: 1, stock: 999,
@@ -1066,14 +1126,14 @@ const PRODUCTS = [
     name: "Customized Neck Chain",
     desc: "Customized, made with love. Personalized names & designs.",
     badge: "New", sizes: null, price: 120, mrp: null,
-    img: "./custom-magnet.png"
+    img: "./neck-chain-1.jpeg"
   },
   {
     id: 6, category: "Accessories", featured: false, minQty: 1, stock: 999,
     name: "Customized Keychain",
     desc: "Customized keychain. Bulk orders available.",
     badge: null, sizes: null, price: 50, mrp: null,
-    img: "./custom-magnet.png"
+    img: "./key-chain.jpeg"
   },
   {
     id: 7, category: "Games", featured: false, minQty: 1, stock: 999,
@@ -1081,6 +1141,14 @@ const PRODUCTS = [
     desc: "Handmade traditional board game.",
     badge: "Traditional", sizes: null, price: 250, mrp: null,
     img: "./chowka-bara.png"
+  },
+  {
+    id: 8, category: "Accessories", featured: false, minQty: 1, stock: 999,
+    name: "Customized Pouch",
+    desc: "Handmade premium pouch. Wholesale ₹80 per piece; bulk ₹100 per piece.",
+    badge: "New", sizes: null, price: 80, mrp: null,
+    img: "./pouch2.jpeg",
+    note: "Wholesale pricing ₹80 each; bulk pricing ₹100 each."
   }
 ];
 
@@ -1099,7 +1167,7 @@ const FAQS = [
 /* ============================================================
    CONFIG
 ============================================================ */
-const UPI_ID = '9071185948@ybl';
+const UPI_ID = 'shilpa.k1994.sk-1@okaxis';
 const UPI_NAME = 'Present Perfect';
 const WHATSAPP_NUMBER = '919071185948';
 const FREE_SHIPPING_THRESHOLD = 999;
@@ -1111,6 +1179,7 @@ const DELIVERY_FEE = 99;
 let selectedPayment = 'cod';
 let activeCategory = 'All';
 let orderInFlight = false;
+let uploadedFiles = [];
 
 const $ = id => document.getElementById(id);
 const fmt = n => '₹' + Number(n).toLocaleString('en-IN');
@@ -1132,7 +1201,7 @@ try {
       .map(i => {
         const p = PRODUCTS.find(p => p.id === i.id);
         if (!p) return null;
-        return { id: p.id, name: p.name, price: p.price, img: p.img, qty: Math.min(i.qty, 50) };
+        return { id: p.id, name: p.name, price: p.price, img: p.img, qty: Math.min(i.qty, 50), size: i.size || null };
       })
       .filter(Boolean);
   }
@@ -1250,12 +1319,19 @@ function renderProducts(filter = 'All', search = '') {
     <div class="product-card fade-up" data-id="${p.id}">
       <div class="product-img-wrap">
         <img src="${escapeHTML(p.img)}" alt="${escapeHTML(p.name)}" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='./custom-magnet.png'" />
-        ${p.badge ? `<span class="product-badge">${escapeHTML(p.badge)}</span>` : ''}
-        <button class="product-wishlist" onclick="toggleWishlist(this, ${p.id})" aria-label="Add ${escapeHTML(p.name)} to wishlist" title="Wishlist">♡</button>
+        <div class="product-overlay"></div>
+        ${p.badge ? `<span class="product-badge${(p.stock || 999) <= 0 ? ' out-stock' : ''}">${escapeHTML(p.badge)}</span>` : ''}
+        <div class="product-actions">
+          <button class="product-action" onclick="toggleWishlist(this, ${p.id})" aria-label="Add ${escapeHTML(p.name)} to wishlist" title="Wishlist">♡</button>
+          <button class="product-action" onclick="shareProduct(${p.id})" aria-label="Share ${escapeHTML(p.name)}" title="Share">↗</button>
+        </div>
         <div class="product-quick-view" onclick="openQuickView(${p.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openQuickView(${p.id})">Quick View</div>
       </div>
       <div class="product-info">
-        <p class="product-cat">${escapeHTML(p.category)}</p>
+        <div class="product-meta-row">
+          <span class="product-cat">${escapeHTML(p.category)}</span>
+          <span class="product-rating">★ ${Number(p.rating || 4.8).toFixed(1)} <span style="color:var(--text-muted);">(${p.reviews || 24})</span></span>
+        </div>
         <h3 class="product-name">${escapeHTML(p.name)}</h3>
         <p class="product-desc">${escapeHTML(p.desc)}</p>
         <div class="product-footer">
@@ -1263,11 +1339,11 @@ function renderProducts(filter = 'All', search = '') {
             ${p.mrp ? `<small>${fmt(p.mrp)}</small>` : ''}
             ${fmt(p.price)}${p.id === 1 ? '<span style="font-size:0.7rem;color:var(--text-muted);font-family:var(--font-body);"> /pc</span>' : ''}
           </div>
-          <button class="add-to-cart-btn" onclick="${p.sizes ? `openQuickView(${p.id})` : `addToCart(${p.id})`}" aria-label="${p.sizes ? 'View options' : 'Add'} ${escapeHTML(p.name)}">{{BUTTON_TEXT}}</button>
+          <button class="add-to-cart-btn" ${((p.stock || 999) <= 0) ? 'disabled' : ''} onclick="${p.sizes ? `openQuickView(${p.id})` : (p.stock <= 0 ? '' : `addToCart(${p.id})`)}" aria-label="${p.sizes ? 'View options' : 'Add'} ${escapeHTML(p.name)}">${((p.stock || 999) <= 0) ? 'Out of Stock' : (p.sizes ? 'Select Size' : 'Add to Cart')}</button>
         </div>
       </div>
     </div>
-  `.replace('{{BUTTON_TEXT}}', p.sizes ? 'Select Size' : 'Add to Cart')).join('');
+  `).join('');
 
   requestAnimationFrame(() => {
     grid.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
@@ -1368,15 +1444,15 @@ $('quickview-modal').addEventListener('click', (e) => { if (e.target === $('quic
 function addToCart(id, selectedSize = null) {
   const p = PRODUCTS.find(p => p.id === id);
   if (!p) return;
-  const existing = cart.find(i => i.id === id);
   const minQty = p.minQty || 1;
   let price = p.price;
   if (p.sizes && selectedSize) {
     const sizeObj = p.sizes.find(s => s.label === selectedSize);
     if (sizeObj) price = sizeObj.price;
   }
+  const existing = cart.find(i => i.id === id && (i.size || null) === (selectedSize || null));
   if (existing) {
-    existing.qty += minQty;
+    existing.qty = Math.min(50, existing.qty + minQty);
     showToast(`Updated: ${p.name} (${existing.qty})`, 'success');
   } else {
     cart.push({ id: p.id, name: p.name, price: price, img: p.img, qty: minQty, size: selectedSize });
@@ -1387,8 +1463,14 @@ function addToCart(id, selectedSize = null) {
 
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
-  saveCart(); updateCartCount(); renderCart();
+  saveCart(); updateCartCount(); renderCart(); updateUPIQR();
   showToast('Item removed from cart');
+}
+
+function clearCart() {
+  cart = [];
+  saveCart(); updateCartCount(); renderCart(); updateUPIQR();
+  showToast('Cart cleared', 'default');
 }
 
 function updateQty(id, delta) {
@@ -1401,8 +1483,12 @@ function updateQty(id, delta) {
     showToast(`Minimum quantity for this item is ${minQty}`, 'error');
     return;
   }
+  if (newQty > 50) {
+    showToast('Maximum quantity limit reached', 'error');
+    return;
+  }
   item.qty = newQty;
-  saveCart(); renderCart(); updateCartCount();
+  saveCart(); renderCart(); updateCartCount(); updateUPIQR();
 }
 
 function updateCartCount() {
@@ -1424,14 +1510,15 @@ function renderCart() {
   const footer = $('cart-footer');
   if (cart.length === 0) {
     container.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon" aria-hidden="true">🎁</div><h3>Your cart is empty</h3><p>Add some beautiful gifts to get started</p></div>`;
-    footer.innerHTML = ''; return;
+    footer.innerHTML = '<div class="cart-totals"><div class="cart-row total"><span>Total Items</span><span>0</span></div></div><button class="cart-checkout-btn" disabled onclick="openCheckout()">Proceed to Checkout →</button>';
+    return;
   }
   container.innerHTML = cart.map(item => `
     <div class="cart-item">
       <img class="cart-item-img" src="${escapeHTML(item.img)}" alt="${escapeHTML(item.name)}" loading="lazy" decoding="async" width="72" height="72" onerror="this.onerror=null;this.src='./custom-magnet.png'" />
       <div class="cart-item-info">
         <p class="cart-item-name">${escapeHTML(item.name)}</p>
-        <p class="cart-item-price">${fmt(item.price)}</p>
+        <p class="cart-item-price">${fmt(item.price)} ${item.size ? `• ${escapeHTML(item.size)}` : ''}</p>
         <div class="cart-item-controls">
           <button class="qty-btn" onclick="updateQty(${item.id}, -1)" aria-label="Decrease quantity">−</button>
           <span class="qty-num">${item.qty}</span>
@@ -1442,13 +1529,16 @@ function renderCart() {
     </div>
   `).join('');
   const { subtotal, delivery, total } = getCartTotals();
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
   footer.innerHTML = `
     <div class="cart-totals">
+      <div class="cart-row"><span>Total Items</span><span>${totalQty}</span></div>
       <div class="cart-row"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
       <div class="cart-row"><span>Delivery</span><span>${delivery === 0 ? '<span style="color:#4caf50;">FREE</span>' : fmt(delivery)}</span></div>
-      <div class="cart-row total"><span>Total</span><span>${fmt(total)}</span></div>
+      <div class="cart-row total"><span>Grand Total</span><span>${fmt(total)}</span></div>
     </div>
     <button class="cart-checkout-btn" onclick="openCheckout()">Proceed to Checkout →</button>
+    <button class="btn btn-outline" style="width:100%;margin-top:10px;border-color:var(--border);color:var(--text-primary);" onclick="clearCart()">Clear Cart</button>
   `;
 }
 
@@ -1482,11 +1572,14 @@ function openCheckout() {
   $('checkout-order-summary').innerHTML = `
     <p class="heading-sm" style="margin-bottom:12px;">Order Summary</p>
     ${cart.map(i => `<div class="order-summary-item"><span>${escapeHTML(i.name)} × ${i.qty}</span><span>${fmt(i.price * i.qty)}</span></div>`).join('')}
-    <div class="order-summary-item"><span>Delivery</span><span>${delivery === 0 ? 'FREE' : fmt(delivery)}</span></div>
+    <div class="order-summary-item"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+    <div class="order-summary-item"><span>Discount</span><span>₹0</span></div>
+    <div class="order-summary-item"><span>Shipping</span><span>${delivery === 0 ? 'FREE' : fmt(delivery)}</span></div>
     <div class="order-summary-total"><span>Grand Total</span><span>${fmt(total)}</span></div>
   `;
   $('checkout-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
+  updateUPIQR();
 }
 function closeCheckout() { $('checkout-modal').classList.remove('open'); document.body.style.overflow = ''; }
 $('checkout-modal').addEventListener('click', e => { if (e.target === $('checkout-modal')) closeCheckout(); });
@@ -1503,16 +1596,37 @@ function selectPayment(method) {
 
 function updateUPIQR() {
   const { total } = getCartTotals();
-  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${total}&cu=INR&tn=PresentPerfectOrder`;
-  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(upiLink)}`;
+  const amount = Number(total).toFixed(2);
+  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${amount}&cu=INR&tn=PresentPerfectOrder`;
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}`;
   const img = $('upi-qr-img');
+  const amountEl = $('upi-amount');
   if (img) img.src = qrApiUrl;
+  if (amountEl) amountEl.textContent = `Amount: ${fmt(total)}`;
+  const idDisplay = $('upi-id-display');
+  if (idDisplay) idDisplay.textContent = UPI_ID;
 }
 
 function copyUPI() {
   navigator.clipboard.writeText(UPI_ID)
     .then(() => showToast('UPI ID copied to clipboard ✓', 'success'))
     .catch(() => showToast('Could not copy — please copy manually', 'error'));
+}
+
+function handleUpload(input, previewId) {
+  const preview = $(previewId);
+  const file = input && input.files && input.files[0];
+  if (!file) { if (preview) preview.innerHTML = 'No file selected'; return; }
+  const maxSize = previewId === 'image-preview' ? 5 * 1024 * 1024 : 10 * 1024 * 1024;
+  if (file.size > maxSize) {
+    showToast('Selected file exceeds the allowed size', 'error');
+    input.value = '';
+    if (preview) preview.innerHTML = 'No file selected';
+    return;
+  }
+  if (preview) preview.innerHTML = `<span class="upload-chip">✓ ${escapeHTML(file.name)}</span>`;
+  uploadedFiles = uploadedFiles.filter(f => f.previewId !== previewId);
+  uploadedFiles.push({ previewId, name: file.name, size: file.size });
 }
 
 function handleScreenshot(input) {
@@ -1548,32 +1662,36 @@ function placeOrder(e) {
   const btn = $('place-order-btn');
   const name = $('c-name').value.trim();
   const phone = $('c-phone').value.trim();
-  const email = $('c-email').value.trim();
   const address = $('c-address').value.trim();
   const city = $('c-city').value.trim();
   const state = $('c-state').value.trim();
   const pin = $('c-pin').value.trim();
-  const msg = $('c-msg').value.trim();
+  const landmark = $('c-landmark') ? $('c-landmark').value.trim() : '';
+  const email = $('c-email').value.trim();
+  const notes = $('c-msg').value.trim();
   const txn = $('c-txn') ? $('c-txn').value.trim() : '';
 
   setFieldError('c-email', 'err-email', '');
   setFieldError('c-phone', 'err-phone', '');
   setFieldError('c-pin', 'err-pin', '');
 
-  if (!name || !phone || !email || !address || !city || !state || !pin) {
-    showToast('Please fill all required fields', 'error'); return;
-  }
-  if (!isValidEmail(email)) {
-    setFieldError('c-email', 'err-email', 'Enter a valid email address');
-    showToast('Please enter a valid email address', 'error'); return;
+  if (!name || !phone || !address || !city || !state || !pin) {
+    showToast('Please complete the required delivery details', 'error'); return;
   }
   if (!isValidPhone(phone)) {
     setFieldError('c-phone', 'err-phone', 'Enter a valid 10-digit mobile number');
     showToast('Please enter a valid 10-digit phone number', 'error'); return;
   }
+  if (email && !isValidEmail(email)) {
+    setFieldError('c-email', 'err-email', 'Enter a valid email address');
+    showToast('Please enter a valid email address', 'error'); return;
+  }
   if (!isValidPincode(pin)) {
     setFieldError('c-pin', 'err-pin', 'Enter a valid 6-digit pincode');
     showToast('Please enter a valid 6-digit pincode', 'error'); return;
+  }
+  if (!selectedPayment) {
+    showToast('Please choose a payment method', 'error'); return;
   }
   if (selectedPayment === 'upi' && !txn) {
     showToast('Please enter your UPI transaction ID', 'error'); return;
@@ -1586,30 +1704,34 @@ function placeOrder(e) {
 
   const orderId = generateOrderId();
   const { subtotal, delivery, total } = getCartTotals();
-  const itemsList = cart.map(i => `• ${i.name} ×${i.qty} = ${fmt(i.price * i.qty)}`).join('\n');
+  const itemsList = cart.map((item, idx) => `
+${idx + 1}. ${item.name}
+Qty: ${item.qty}
+Price: ${fmt(item.price * item.qty)}
+`).join('');
   const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const paymentLabel = selectedPayment === 'upi' ? 'UPI Paid' : 'Cash on Delivery';
 
+  const uploadSummary = uploadedFiles.length ? `\nAttachments: ${uploadedFiles.map(f => f.name).join(', ')}` : '';
   const waMessage =
-`🎁 *NEW ORDER — PRESENT PERFECT*
-Order ID: *${orderId}*
-Date: ${timestamp}
+`Present Perfect Order
 
-*Customer:*
-${name}
+Customer: ${name}
 Phone: ${phone}
-Email: ${email}
-Address: ${address}, ${city}, ${state} - ${pin}
-${msg ? `Gift note: ${msg}` : ''}
+Address: ${address}, ${city}, ${state} - ${pin}${landmark ? `\nLandmark: ${landmark}` : ''}
 
-*Items:*
+Products:
 ${itemsList}
+Total Items: ${cart.reduce((s, i) => s + i.qty, 0)}
+Grand Total: ${fmt(total)}
 
-Subtotal: ${fmt(subtotal)}
-Delivery: ${delivery === 0 ? 'FREE' : fmt(delivery)}
-*Total: ${fmt(total)}*
+Payment: ${paymentLabel}
+Transaction ID: ${selectedPayment === 'upi' ? txn : 'N/A'}
+Customization: ${notes || 'None'}
+Delivery Notes: ${notes || 'None'}${uploadSummary}
 
-Payment: ${selectedPayment === 'cod' ? 'Cash on Delivery' : 'UPI Payment'}
-${selectedPayment === 'upi' ? `UPI Txn ID: ${txn}` : ''}`;
+Order ID: ${orderId}
+Date: ${timestamp}`;
 
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`;
 
@@ -1686,13 +1808,45 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFAQs();
   updateCartCount();
   renderCart();
-  // Duplicate marquee content once for seamless infinite scroll (instead of hardcoding it twice in HTML)
   const track = $('marquee-track');
   if (track) track.insertAdjacentHTML('beforeend', track.innerHTML);
+  document.querySelectorAll('.insta-item').forEach(item => {
+    item.addEventListener('click', () => openGalleryLightbox(item));
+    item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGalleryLightbox(item); } });
+  });
 });
 
+function openGalleryLightbox(item) {
+  const img = $('gallery-lightbox-image');
+  const title = $('gallery-lightbox-title');
+  const caption = $('gallery-lightbox-caption');
+  if (!img || !title || !caption) return;
+  img.src = item.querySelector('img').src;
+  img.alt = item.querySelector('img').alt;
+  title.textContent = item.dataset.title || 'Present Perfect Gallery';
+  caption.textContent = item.dataset.caption || 'Handcrafted creations from Present Perfect.';
+  $('gallery-lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryLightbox() {
+  $('gallery-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function shareProduct(id) {
+  const p = PRODUCTS.find(item => item.id === id);
+  if (!p) return;
+  const shareText = `Take a look at ${p.name} from Present Perfect.`;
+  if (navigator.share) {
+    navigator.share({ title: p.name, text: shareText, url: window.location.href }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(`${shareText} ${window.location.href}`).then(() => showToast('Product link copied', 'success')).catch(() => showToast('Sharing not available', 'error'));
+  }
+}
+
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeCart(); closeCheckout(); closeQuickView(); closeSuccess(); closeMobileNav(); }
+  if (e.key === 'Escape') { closeCart(); closeCheckout(); closeQuickView(); closeSuccess(); closeGalleryLightbox(); closeMobileNav(); }
 });
 </script>
 </body>
