@@ -1,0 +1,20 @@
+/* Present Perfect — collection image fixes */
+/* The accessories photo has too much empty space above the product. Keep the product itself prominent and centered. */
+.collection:nth-child(2) img {
+  object-fit: cover;
+  object-position: 50% 88%;
+  transform: scale(1.38);
+  transform-origin: 50% 88%;
+}
+.collection:nth-child(2):hover img {
+  transform: scale(1.45);
+}
+@media (max-width: 700px) {
+  .collection:nth-child(2) img {
+    transform: scale(1.28);
+    transform-origin: 50% 88%;
+  }
+  .collection:nth-child(2):hover img {
+    transform: scale(1.34);
+  }
+}
