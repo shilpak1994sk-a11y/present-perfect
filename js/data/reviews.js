@@ -1,0 +1,1 @@
+export const reviews=[{name:'Priya S',text:'Beautiful quality magnets and very neat finishing. Everyone loved them!',rating:5},{name:'Ananya K',text:'The flash cards are creative and perfect for kids learning. Highly recommended.',rating:5},{name:'Raghav M',text:'Very unique customized gifts and quick response for orders.',rating:5}];
