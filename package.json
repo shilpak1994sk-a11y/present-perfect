@@ -1,1 +1,1 @@
-{"name":"present-perfect","version":"1.0.0","private":true,"description":"Present Perfect handmade and customized gifting storefront","scripts":{"dev":"node server.js"},"engines":{"node":">=18"}}
+{"name":"present-perfect","version":"1.0.0","private":true,"type":"module","description":"Present Perfect handmade and customized gifting storefront","scripts":{"dev":"node server.js"},"engines":{"node":">=18"}}
